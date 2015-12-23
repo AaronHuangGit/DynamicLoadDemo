@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+    <TextView android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="16dp"
+              android:text="这是使用Activity代理方式展示的一个窗口(从本地插件存储目录下的APK中加载Activity和相关资源文件)"/>
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="添加一个Plugin Fragment"/>
+</LinearLayout>

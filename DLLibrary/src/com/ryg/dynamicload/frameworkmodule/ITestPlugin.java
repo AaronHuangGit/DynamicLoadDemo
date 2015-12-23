@@ -10,4 +10,6 @@ import android.content.Context;
  */
 public abstract class ITestPlugin {
     public abstract void showToast(Context context, String content);
+
+    public abstract void showDialog(Context context, String title, String message);
 }

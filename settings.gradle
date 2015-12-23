@@ -1,1 +1,1 @@
-include ':DLLibrary', ':app', ':plugina'
+include ':DLLibrary', ':app', ':plugina', ':pluginapk'
