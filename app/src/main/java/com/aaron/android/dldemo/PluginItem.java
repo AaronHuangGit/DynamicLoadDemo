@@ -10,12 +10,21 @@ public class PluginItem {
     private String mFilePath;
     private PluginType mPluginType;
     private String mPluginDescription;
+    private String mPluginDownloadUrl;
 
+    public String getPluginDownloadUrl() {
+        return mPluginDownloadUrl;
+    }
 
-    public PluginItem(String filePath, PluginType pluginType, String pluginDescription) {
+    public void setPluginDownloadUrl(String pluginDownloadUrl) {
+        mPluginDownloadUrl = pluginDownloadUrl;
+    }
+
+    public PluginItem(String filePath, PluginType pluginType, String pluginDescription, String pluginDownloadUrl) {
         mFilePath = filePath;
         mPluginType = pluginType;
         mPluginDescription = pluginDescription;
+        mPluginDownloadUrl = pluginDownloadUrl;
     }
 
     public String getFilePath() {

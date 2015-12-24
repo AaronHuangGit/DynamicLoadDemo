@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -30,19 +31,42 @@ public class MainActivity extends AppCompatActivity {
     public static final String PLUGIN_DIR = "dex";
     private String dexOutPath;
     private ITestPlugin mITestPlugin;
+    private FileDownloaderManager mFileDownloaderManager;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setTitle(R.string.title_activity_main);
         initData();
         initViews();
     }
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
     private void initData() {
         String rootPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "aaron/";
-        mPluginItemList.add(new PluginItem(rootPath + "pluginApk.apk", PluginItem.PluginType.TYPE_APK, "打开一个插件窗口"));
-        mPluginItemList.add(new PluginItem(rootPath + "plugina.jar", PluginItem.PluginType.TYPE_JAR, "弹出一个插件化Toast实现"));
+        mPluginItemList.add(new PluginItem(rootPath , PluginItem.PluginType.TYPE_APK, "打开一个插件窗口", "https://github.com/AaronHuangGit/DynamicLoadDemo/blob/master/plugins/pluginApk.apk?raw=true"));
+        mPluginItemList.add(new PluginItem(rootPath, PluginItem.PluginType.TYPE_JAR, "弹出一个插件化Toast实现", "https://github.com/AaronHuangGit/DynamicLoadDemo/raw/master/plugins/plugina.jar"));
+        mFileDownloaderManager = new FileDownloaderManager(this);
+        for (PluginItem pluginItem : mPluginItemList) {
+            mFileDownloaderManager.downloadFile(pluginItem.getPluginDownloadUrl(), pluginItem.getFilePath());
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mFileDownloaderManager != null) {
+            mFileDownloaderManager.onDestory();
+        }
     }
 
     private void initViews() {
@@ -54,12 +78,12 @@ public class MainActivity extends AppCompatActivity {
                 PluginItem pluginItem = mPluginItemList.get(position);
                 if (pluginItem.getPluginType() == PluginItem.PluginType.TYPE_APK) {
                     DLPluginManager dlPluginManager = DLPluginManager.getInstance(MainActivity.this);
-                    dlPluginManager.loadApk(pluginItem.getFilePath());
+                    dlPluginManager.loadApk(pluginItem.getFilePath() + File.separator +FileUtils.getFileName(pluginItem.getPluginDownloadUrl()));
                     dlPluginManager.startPluginActivity(MainActivity.this, new DLIntent("com.aaron.android.pluginapk", "com.aaron.android.pluginapk.MainActivity"));
                 } else {
-                    mITestPlugin = loadLocalPlugin(pluginItem.getFilePath());
+                    mITestPlugin = loadLocalPlugin(pluginItem.getFilePath()+ File.separator +FileUtils.getFileName(pluginItem.getPluginDownloadUrl()));
                     if (mITestPlugin != null) {
-                        mITestPlugin.showDialog(MainActivity.this, "大厨小灶", "成功调用插件模块");
+                        mITestPlugin.showDialog(MainActivity.this, "大厨小灶", "成功调用插件模块\njar适合类似于下载模块的框架代码插件的封装");
                     }
                 }
             }

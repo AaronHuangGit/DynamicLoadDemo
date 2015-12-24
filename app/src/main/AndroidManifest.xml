@@ -72,6 +72,7 @@
             </intent-filter>
             -->
         </service>
+        <service android:name=".FileDownloadService"></service>
     </application>
 
 </manifest>
